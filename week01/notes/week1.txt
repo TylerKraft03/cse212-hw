@@ -1,0 +1,55 @@
+Why Big 0:
+-Compare performance to find best data structure / algorithm for our need.
+-Doesn't depend on hardware.
+-Small inputs are usually fast anyways.
+
+0(n) -> big oh of n
+
+bool FindBob (List nameList)
+{
+    foreach (car name in nameList)
+    {
+        if (name == "Bob")
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+0(?) => how many operations will this take to execute, in terms of n (the size of the input)
+
+length of nameList = name
+0(n * 1) => 0(n)
+
+
+void MultipleLoops(int n)
+{
+    for (int i = 0; i <n; i++)
+    {
+        Console.WriteLine(i);
+    }
+}
+
+0((n * 1) + (n * 1)) => 0(n + n) => 0(2n) => 0(n)
+
+
+void MultiplicationTable(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+       for (int j = 0; j < n; j++)
+       {
+        Console.WriteLine((i + 1) * (j + 1));
+       } 
+    }
+}
+
+0(n * (n * (1))) => n * (n) => 0(n^2)
+
+
+
+Rules of Thumb:
+1. Nested loops - multiply, serial loops - add
+2. Drop constant coefficients
+3. Drop lesser exponents (non-deominating terms)
