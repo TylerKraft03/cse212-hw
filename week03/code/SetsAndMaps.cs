@@ -21,8 +21,34 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>(words);
+        var result = new List<string>();
+
+        foreach (var word in words)
+        {
+            if (word.Length != 2)
+            {
+                continue;
+            }
+
+            if (word[0] == word[1])
+            {
+                continue;
+            }
+
+            var reverse = string.Concat(word[1], word[0]);
+            if (!seen.Contains(reverse))
+            {
+                continue;
+            }
+
+            if (string.Compare(word, reverse, StringComparison.Ordinal) < 0)
+            {
+                result.Add($"{word} & {reverse}");
+            }
+        }
+
+        return result.ToArray();
     }
 
     /// <summary>
@@ -39,10 +65,28 @@ public static class SetsAndMaps
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename))
+        foreach (var line in System.IO.File.ReadLines(filename))
         {
-            var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var fields = line.Split(',');
+            if (fields.Length < 4)
+            {
+                continue;
+            }
+
+            var degree = fields[3].Trim();
+            if (string.IsNullOrEmpty(degree))
+            {
+                continue;
+            }
+
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -66,8 +110,56 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        if (word1 is null || word2 is null)
+        {
+            return false;
+        }
+
+        var letterCounts = new Dictionary<char, int>(word1.Length);
+        var length1 = 0;
+        foreach (var c in word1)
+        {
+            if (c == ' ')
+            {
+                continue;
+            }
+
+            var lower = char.ToLowerInvariant(c);
+            length1++;
+            if (letterCounts.ContainsKey(lower))
+            {
+                letterCounts[lower]++;
+            }
+            else
+            {
+                letterCounts[lower] = 1;
+            }
+        }
+
+        var length2 = 0;
+        foreach (var c in word2)
+        {
+            if (c == ' ')
+            {
+                continue;
+            }
+
+            var lower = char.ToLowerInvariant(c);
+            length2++;
+            if (!letterCounts.TryGetValue(lower, out var count) || count == 0)
+            {
+                return false;
+            }
+
+            letterCounts[lower] = count - 1;
+        }
+
+        if (length1 != length2)
+        {
+            return false;
+        }
+
+        return letterCounts.Values.All(count => count == 0);
     }
 
     /// <summary>
